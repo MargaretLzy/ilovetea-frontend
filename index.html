@@ -15,13 +15,65 @@
     <div id="ramen-menu">
       <!-- Ramen Images Here -->
     </div>
+     <!-- Navigation -->
+  <nav class="nav">
+    <div class="nav__center container">
+      <div class="nav__logo">
+        <h1>I ♥ Tea<span></span></h1>
+      </div>
 
+      <ul class="nav__list">
+        <a href="#" class="login">Login</a>
+        <div class="cart__icon">
+          <h2>cart</h2>
+          <span class="item__total">0</span>
+        </div>
+      </ul>
+
+
+    </div>
+  </nav>
+  <!-- Navigation -->
+
+  <section class="cart__overlay">
+    <div class="cart">
+      <span class="close__cart">
+        <svg>
+          <use xlink:href="./sprite.svg#icon-cross"></use>
+        </svg>
+      </span>
+      <h1>Your Cart</h1>
+      <div class="cart__centent">
+       
+      </div>
+
+      <div class="cart__footer">
+        <h3>Total: $ <span class="cart__total">0</span></h3>
+        <button class="clear__cart btn">Clear Cart</button>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="products">
+    <div class="product__center">
+     
+    </div>
+  </section>
     <!-- Ramen Details -->
     <div id="ramen-detail">
       <img class="detail-image" src="./assets/image-placeholder.jpg" alt="Insert Name Here" />
       <h2 class="name">Insert Name Here</h2>
       <h3 class="restaurant">Insert Restaurant Here</h3>
+   
+    <div class="bottom">
+      <div class="btn__group">
+        <a href="#" class="btn addToCart">Add to Cart</a>
+        <a href="#" class="btn view">View</a>
+      </div>
+      <div class="price">$255.99</div>
     </div>
+     </div>
 
     <!-- Rating Form -->
     <form id="ramen-rating" data-id="insert ramen ID">

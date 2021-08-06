@@ -4,29 +4,115 @@ const update=  document.querySelector('form#ramen-rating')
 const newform = document.querySelector('form#new-ramen')
 const deletebtn=document.querySelector('button.delete')
 const orderbtn=document.querySelector('button.order')
-fetch("http://localhost:3000/menu_items")
-.then(res => res.json())
-.then((allToys) => {
-  console.log(allToys);
-  allToys.forEach(render)
-})
+const cartDOM = document.querySelector(".cart");
+const cartContent = document.querySelector(".cart__centent");
+const openCart = document.querySelector(".cart__icon");
+const closeCart = document.querySelector(".close__cart");
+const overlay = document.querySelector(".cart__overlay");
+const cartTotal = document.querySelector(".cart__total");
+const clearCartBtn = document.querySelector(".clear__cart");
+const itemTotals = document.querySelector(".item__total");
+if (document.readyState == 'loading') {
+  document.addEventListener('DOMContentLoaded', ready)
+} else {
+  ready()
+}
 
-function oneRamen(ramen)
+function ready() {
+
+  var addToCartButtons = document.querySelectorAll(".addToCart")
+  for (var i = 0; i < addToCartButtons.length; i++) {
+      var button = addToCartButtons[i]
+      button.addEventListener('click', addToCartClicked)
+
+  }
+
+}
+let cart =[];
+let buttonDOM = [];
+
+function addToCartClicked(event) {
+  console.log('cli')
+  var button = event.target
+
+  var shopItem = button.parentElement.parentElement.parentElement
+  console.log(shopItem)
+  var title = shopItem.getElementsByClassName('name')[0].innerText
+  var price = shopItem.getElementsByClassName('price')[0].innerText
+  var imageSrc = shopItem.getElementsByClassName('detail-image')[0].src
+  console.log(title,price, imageSrc)
+  addItemToCart(title, price, imageSrc)
+ 
+}
+
+function addItemToCart(title, price, imageSrc) {
+  var div = document.createElement('div')
+  div.classList.add("cart__item");
+
+  div.innerHTML = `<img src=${imageSrc}>
+        <div>
+          <h3>${title}</h3>
+          <h3 class="price">$${price}</h3>
+        </div>
+        <div>
+          
+
+      </div>`;
+      console.log(div)
+  cartContent.appendChild(div);
+}
+function show() {
+  
+  cartDOM.classList.add("show");
+  overlay.classList.add("show");
+}
+function hide() {
+  cartDOM.classList.remove("show");
+  overlay.classList.remove("show");
+}
+function set(){
+
+this.populate(cart);
+openCart.addEventListener("click", this.show);
+closeCart.addEventListener("click", this.hide);
+}
+function populate(cart) {
+  cart.forEach(item => this.addItemToCart(item));
+}
+
+
+    // Clear Cart
+    clearCartBtn.addEventListener("click", () => {
+      this.clearCart();
+      this.hide();
+    });
+    function clearCart() {
+      const cartItems = cart.map(item => item.id);
+      cartItems.forEach(id => this.removeItem(id));
+  
+      while (cartContent.children.length > 0) {
+        cartContent.removeChild(cartContent.children[0]);
+      }
+    }
+function oneRamen(tea)
 {
     const detailimg = document.querySelector('img.detail-image')
-    detailimg.src = ramen.image
+    detailimg.src = tea.image
 
     const h2= document.querySelector('h2.name')
-    h2.textContent = ramen.name
+    h2.textContent = tea.name
 
     const h3= document.querySelector('h3.restaurant')
-    h3.textContent = ramen.restaurant
-
-    update.dataset.id = ramen.id
+    h3.textContent = tea.restaurant
+  
+    const price =document.querySelector('div.price')
+    price.textContent = '$'+tea.price
+    
+    update.dataset.id = tea.id
     const rating = update.querySelector('input#rating')
-    rating.value = ramen.rating
+    rating.value = tea.rating
     const comment = update.querySelector('#comment')
-    comment.value = ramen.comment
+    comment.value = tea.comment
 }
 
 function renderoneRamen(ramen){
@@ -48,6 +134,7 @@ function renderAllRamen(){
             })
         })
 }
+
 menu.addEventListener('click', event=>{
     if (event.target.matches('img')){
         const id = event.target.dataset.id
@@ -115,4 +202,7 @@ deletebtn.addEventListener('click',e=>{
 
 })
 
+
 renderAllRamen()
+
+set()
