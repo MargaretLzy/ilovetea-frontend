@@ -177,7 +177,7 @@ form h4 {
 }
 
 /* Cart */
-.cart__overlay {
+.cart-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -212,7 +212,7 @@ form h4 {
   visibility: visible;
 }
 
-.cart__overlay.show {
+.cart-overlay.show {
   visibility: visible;
 }
 

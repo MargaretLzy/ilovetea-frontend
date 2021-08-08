@@ -8,10 +8,11 @@ const cartDOM = document.querySelector(".cart");
 const cartContent = document.querySelector(".cart__centent");
 const openCart = document.querySelector(".cart__icon");
 const closeCart = document.querySelector(".close__cart");
-const overlay = document.querySelector(".cart__overlay");
+const overlay = document.querySelector(".cart-overlay");
 const cartTotal = document.querySelector(".cart__total");
 const clearCartBtn = document.querySelector(".clear__cart");
 const itemTotals = document.querySelector(".item__total");
+const cartit=document.querySelector('.cart__item')
 if (document.readyState == 'loading') {
   document.addEventListener('DOMContentLoaded', ready)
 } else {
@@ -29,38 +30,70 @@ function ready() {
 
 }
 let cart =[];
+
 let buttonDOM = [];
+
 
 function addToCartClicked(event) {
   console.log('cli')
   var button = event.target
-
+  
   var shopItem = button.parentElement.parentElement.parentElement
   console.log(shopItem)
   var title = shopItem.getElementsByClassName('name')[0].innerText
   var price = shopItem.getElementsByClassName('price')[0].innerText
   var imageSrc = shopItem.getElementsByClassName('detail-image')[0].src
-  console.log(title,price, imageSrc)
+ // console.log(title,price, imageSrc)
   addItemToCart(title, price, imageSrc)
- 
+  localStorage.setItem('cart', JSON.stringify({title, price,imageSrc }))
+
+  const cartItem= localStorage.getItem('cart');
+  cartContent.append(cartItem);
+cart.push(cartItem);
+cart.save;
+cartit=cart
 }
 
-function addItemToCart(title, price, imageSrc) {
+function addItemToCart(title, price, imageSrc, id) {
   var div = document.createElement('div')
   div.classList.add("cart__item");
 
   div.innerHTML = `<img src=${imageSrc}>
         <div>
           <h3>${title}</h3>
-          <h3 class="price">$${price}</h3>
+          <h3 class="price">${price}</h3>
         </div>
         <div>
-          
+            <span class="increase" data-id=${id}>
+              <svg>
+                <use xlink:href="./sprite.svg#icon-angle-up"></use>
+              </svg>
+            </span>
+            <p class="item__amount">1</p>
+            <span class="decrease" data-id=${id}>
+              <svg>
+                <use xlink:href="./sprite.svg#icon-angle-down"></use>
+              </svg>
+            </span>
+          </div>
 
-      </div>`;
+            <span class="remove__item" data-id=${id}>
+              <svg>
+                <use xlink:href="./sprite.svg#icon-trash"></use>
+              </svg>
+            </span>
+
+        </div>`;
       console.log(div)
+      
   cartContent.appendChild(div);
+  const cartItem= localStorage.getItem('cart');
+      cartContent.append(cartItem);
+  cart.push(cartItem);
+  cart.save;
+  console.log(cartItem);
 }
+
 function show() {
   
   cartDOM.classList.add("show");
@@ -80,7 +113,6 @@ function populate(cart) {
   cart.forEach(item => this.addItemToCart(item));
 }
 
-
     // Clear Cart
     clearCartBtn.addEventListener("click", () => {
       this.clearCart();
@@ -94,6 +126,20 @@ function populate(cart) {
         cartContent.removeChild(cartContent.children[0]);
       }
     }
+
+    cartContent.addEventListener("click", e => {
+      const target = e.target.closest("span");
+      const targetElement = target.classList.contains("remove__item");
+      if (!target) return;
+
+      if (targetElement) {
+        const id = parseInt(target.dataset.id);
+        localStorage.removeItem(id);
+        cartContent.removeChild(target.parentElement);
+      } 
+      
+    });
+  
 function oneRamen(tea)
 {
     const detailimg = document.querySelector('img.detail-image')
@@ -108,6 +154,8 @@ function oneRamen(tea)
     const price =document.querySelector('div.price')
     price.textContent = '$'+tea.price
     
+    const description = document.querySelector('#description')
+    description.textContent = tea.description
     update.dataset.id = tea.id
     const rating = update.querySelector('input#rating')
     rating.value = tea.rating
