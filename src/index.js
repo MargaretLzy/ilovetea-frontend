@@ -1,7 +1,7 @@
 // write your code here
-const menu = document.querySelector('#ramen-menu')
-const update=  document.querySelector('form#ramen-rating')
-const newform = document.querySelector('form#new-ramen')
+const menu = document.querySelector('#tea-menu')
+const update=  document.querySelector('form#tea-rating')
+const newform = document.querySelector('form#new-tea')
 const deletebtn=document.querySelector('button.delete')
 const orderbtn=document.querySelector('button.order')
 const cartDOM = document.querySelector(".cart");
@@ -13,85 +13,100 @@ const cartTotal = document.querySelector(".cart__total");
 const clearCartBtn = document.querySelector(".clear__cart");
 const itemTotals = document.querySelector(".item__total");
 const cartit=document.querySelector('.cart__item')
-if (document.readyState == 'loading') {
-  document.addEventListener('DOMContentLoaded', ready)
-} else {
-  ready()
-}
+const add = document.querySelector('button.btn.addToCart')
 
-function ready() {
 
-  var addToCartButtons = document.querySelectorAll(".addToCart")
-  for (var i = 0; i < addToCartButtons.length; i++) {
-      var button = addToCartButtons[i]
-      button.addEventListener('click', addToCartClicked)
 
-  }
-
-}
 let cart =[];
 
-let buttonDOM = [];
+function getButtons() {
+ 
+    const id = add.dataset.id;
+    //console.log(add)
+    console.log(id)
 
+    const inCart = cart.find(item => {return item.id === parseInt(id)});
 
-function addToCartClicked(event) {
-  console.log('cli')
-  var button = event.target
+  console.log(cart)
+   console.log(inCart)
+    if (inCart) {
+      add.innerText = "In Cart";
+     add.disabled = true;
+    }
+  }
   
-  var shopItem = button.parentElement.parentElement.parentElement
-  console.log(shopItem)
-  var title = shopItem.getElementsByClassName('name')[0].innerText
-  var price = shopItem.getElementsByClassName('price')[0].innerText
-  var imageSrc = shopItem.getElementsByClassName('detail-image')[0].src
- // console.log(title,price, imageSrc)
-  addItemToCart(title, price, imageSrc)
-  localStorage.setItem('cart', JSON.stringify({title, price,imageSrc }))
+    add.addEventListener("click", e => {
+      e.preventDefault();
+     console.log(add)
+  e.target.innerHTML = "In Cart";
+  e.target.disabled = true;
+ 
+      const id = add.dataset.id;
+     console.log(id);
+      // Get product from products
+      const order_item = { ...Storage.getProduct(id), amount: 1 };
+     
+      console.log(order_item)
+      // Add product to cart
+      cart = [...cart, order_item];
+      console.log(cart)
 
-  const cartItem= localStorage.getItem('cart');
-  cartContent.append(cartItem);
-cart.push(cartItem);
-cart.save;
-cartit=cart
+      // save the cart in local storage
+      Storage.saveCart(cart);
+      // set cart values
+      this.setItemValues(cart);
+      // display the cart item
+      this.addOrderItem(order_item);
+      // show the cart
+
+    });
+  ;
+
+
+function setItemValues(cart) {
+  let tempTotal = 0;
+  let itemTotal = 0;
+
+  cart.map(item => {
+    tempTotal += item.price * item.amount;
+    itemTotal += item.amount;
+  });
+  cartTotal.innerText = parseFloat(tempTotal.toFixed(2));
+  itemTotals.innerText = itemTotal;
 }
 
-function addItemToCart(title, price, imageSrc, id) {
-  var div = document.createElement('div')
+  
+function addOrderItem({ image, price, name, id }) {
+  const div = document.createElement("div");
   div.classList.add("cart__item");
 
-  div.innerHTML = `<img src=${imageSrc}>
+  div.innerHTML = `<img src=${image}>
         <div>
-          <h3>${title}</h3>
-          <h3 class="price">${price}</h3>
+          <h3>${name}</h3>
+          <h3 class="price">$${price}</h3>
         </div>
         <div>
-            <span class="increase" data-id=${id}>
-              <svg>
-                <use xlink:href="./sprite.svg#icon-angle-up"></use>
-              </svg>
-            </span>
-            <p class="item__amount">1</p>
-            <span class="decrease" data-id=${id}>
-              <svg>
-                <use xlink:href="./sprite.svg#icon-angle-down"></use>
-              </svg>
-            </span>
-          </div>
+          <span class="increase" data-id=${id}>
+            <svg>
+              <use xlink:href="./sprite.svg#icon-angle-up"></use>
+            </svg>
+          </span>
+          <p class="item__amount">1</p>
+          <span class="decrease" data-id=${id}>
+            <svg>
+              <use xlink:href="./sprite.svg#icon-angle-down"></use>
+            </svg>
+          </span>
+        </div>
 
-            <span class="remove__item" data-id=${id}>
-              <svg>
-                <use xlink:href="./sprite.svg#icon-trash"></use>
-              </svg>
-            </span>
+          <span class="remove__item" data-id=${id}>
+            <svg>
+              <use xlink:href="./sprite.svg#icon-trash"></use>
+            </svg>
+          </span>
 
-        </div>`;
-      console.log(div)
-      
+      </div>`;
   cartContent.appendChild(div);
-  const cartItem= localStorage.getItem('cart');
-      cartContent.append(cartItem);
-  cart.push(cartItem);
-  cart.save;
-  console.log(cartItem);
 }
 
 function show() {
@@ -104,13 +119,14 @@ function hide() {
   overlay.classList.remove("show");
 }
 function set(){
-
+  cart = Storage.getCart();
+  this.setItemValues(cart);
 this.populate(cart);
 openCart.addEventListener("click", this.show);
 closeCart.addEventListener("click", this.hide);
 }
 function populate(cart) {
-  cart.forEach(item => this.addItemToCart(item));
+  cart.forEach(item => this.addOrderItem(item));
 }
 
     // Clear Cart
@@ -119,14 +135,24 @@ function populate(cart) {
       this.hide();
     });
     function clearCart() {
-      const cartItems = cart.map(item => item.id);
-      cartItems.forEach(id => this.removeItem(id));
+      const orderItems = cart.map(item => item.id);
+      console.log(orderItems)
+      orderItems.forEach(id => this.removeItem(id));
   
       while (cartContent.children.length > 0) {
         cartContent.removeChild(cartContent.children[0]);
       }
     }
+   function removeItem(id) {
+      cart = cart.filter(item => item.id !== id);
+      this.setItemValues(cart);
+      Storage.saveCart(cart);
 
+      add.disabled = false;
+      add.innerText = "Add to Cart";
+    }
+  
+  
     cartContent.addEventListener("click", e => {
       const target = e.target.closest("span");
       const targetElement = target.classList.contains("remove__item");
@@ -134,14 +160,35 @@ function populate(cart) {
 
       if (targetElement) {
         const id = parseInt(target.dataset.id);
-        localStorage.removeItem(id);
+        this.removeItem(id);
         cartContent.removeChild(target.parentElement);
-      } 
-      
+      } else if (target.classList.contains("increase")) {
+        const id = parseInt(target.dataset.id, 10);
+        let tempItem = cart.find(item => item.id === id);
+        tempItem.amount++;
+        Storage.saveCart(cart);
+        this.setItemValues(cart);
+        target.nextElementSibling.innerText = tempItem.amount;
+      } else if (target.classList.contains("decrease")) {
+        const id = parseInt(target.dataset.id, 10);
+        let tempItem = cart.find(item => item.id === id);
+        tempItem.amount--;
+
+        if (tempItem.amount > 0) {
+          Storage.saveCart(cart);
+          this.setItemValues(cart);
+          target.previousElementSibling.innerText = tempItem.amount;
+        } else {
+          this.removeItem(id);
+          cartContent.removeChild(target.parentElement.parentElement);
+        }
+      }
     });
   
-function oneRamen(tea)
+  
+function oneTea(tea)
 {
+  
     const detailimg = document.querySelector('img.detail-image')
     detailimg.src = tea.image
 
@@ -161,24 +208,62 @@ function oneRamen(tea)
     rating.value = tea.rating
     const comment = update.querySelector('#comment')
     comment.value = tea.comment
+    add.dataset.id = tea.id
+    add.disabled= false
+    add.innerHTML="Add to Cart"
+    console.log(add)
+    getButtons();
+    
+}
+class Storage {
+  static saveProduct(obj) {
+    localStorage.setItem("products", JSON.stringify(obj));
+
+  }
+
+  static saveCart(cart) {
+    localStorage.setItem("cart", JSON.stringify(cart));
+  }
+
+  static getProduct(id) {
+    const products = JSON.parse(localStorage.getItem("products"));
+   console.log(products)
+   
+  return products.find(product => {
+      return product.id === parseInt(id)
+    }
+      );
+ //console.log(products.find(product => product.id === id))
+  }
+
+  static getCart() {
+    return localStorage.getItem("cart")
+      ? JSON.parse(localStorage.getItem("cart"))
+      : [];
+  }
+}
+function renderoneTea(tea){
+    const teaimg= document.createElement('img')
+    teaimg.src = tea.image
+    teaimg.dataset.id = tea.id
+    menu.append(teaimg)
+  
+  
 }
 
-function renderoneRamen(ramen){
-    const ramenimg= document.createElement('img')
-    ramenimg.src = ramen.image
-    ramenimg.dataset.id = ramen.id
-    menu.append(ramenimg)
-}
-
-function renderAllRamen(){
+function renderAllTea(){
+  
     fetch('http://localhost:3000/menu_items')
         .then(r => r.json())
-        .then(ramens => {
+        .then(teas => {
             menu.innerHTML = ''
-            oneRamen(ramens[0])
-
-            ramens.forEach(ramen => {
-                renderoneRamen(ramen)
+            oneTea(teas[0])
+           
+            Storage.saveProduct(teas)
+            teas.forEach(tea => {
+                renderoneTea(tea)
+               
+               
             })
         })
 }
@@ -188,15 +273,13 @@ menu.addEventListener('click', event=>{
         const id = event.target.dataset.id
     fetch('http://localhost:3000/menu_items/' + id)
         .then(r => r.json())
-        .then(ramen => {
-            oneRamen(ramen)
+        .then(tea => {
+            oneTea(tea)
         })
     }
 })
 
-orderbtn.addEventListener('click',() => {
-  //window.location.href ='http://localhost:3000/menu_items/home'
-})
+
 update.addEventListener('submit', e=>{
     e.preventDefault()
     const rating=e.target[0].value
@@ -209,7 +292,7 @@ update.addEventListener('submit', e=>{
         body: JSON.stringify({rating, comment })
     })
     .then (r=>r.json())
-    .then(updateRamen=>{
+    .then(updateTea=>{
         
     })
 })
@@ -217,7 +300,7 @@ update.addEventListener('submit', e=>{
 newform.addEventListener('submit', e=>{
     e.preventDefault()
 
-    const name = e.target[0].value
+    const name = e.target.name.value
     const restaurant= e.target.restaurant.value
     const image = e.target.image.value
     const rating = e.target.rating.value
@@ -228,12 +311,12 @@ newform.addEventListener('submit', e=>{
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ name, restaurant, image, rating, comment })
+        body: JSON.stringify({ name, restaurant, image, rating, comment,id })
     })
         .then(r => r.json())
-        .then(newRamen => {
-            oneRamen(newRamen)
-            renderoneRamen(newRamen)
+        .then(newTea => {
+            oneTea(newTea)
+            renderoneTea(newTea)
             e.target.reset()
         })
 })
@@ -245,12 +328,13 @@ deletebtn.addEventListener('click',e=>{
     })
     .then(r=> r.json())
     .then(()=>{
-        renderAllRamen()
+        renderAllTea()
     })
 
 })
 
 
-renderAllRamen()
 
-set()
+renderAllTea();
+
+set();

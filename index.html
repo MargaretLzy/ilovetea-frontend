@@ -11,9 +11,9 @@
       <h3>I ♥ Tea</h3>
     </header>
 
-    <!-- Ramen Menu -->
-    <div id="ramen-menu">
-      <!-- Ramen Images Here -->
+    <!-- Tea Menu -->
+    <div id="tea-menu">
+      <!-- Tea Images Here -->
     </div>
      <!-- Navigation -->
   <nav class="nav">
@@ -61,16 +61,12 @@
     </div>
   </section>
     <!-- Tea Details -->
-    <div id="ramen-detail">
+    <div id="tea-detail">
       <img class="detail-image" src="" alt="Insert Name Here" />
       <h2 class="name">Insert Name Here</h2>
       <h3 class="restaurant">Insert Restaurant Here</h3>
    
-    <div class="bottom">
-      <div class="btn__group">
-        <a href="#" class="btn addToCart">Add to Cart</a>
-        <a href="#" class="btn view">View</a>
-      </div>
+       <button class="btn addToCart" data-id="id" >Add to Cart</button>
       <div class="price">$255.99</div>
      
     </div>
@@ -79,17 +75,17 @@
     <!-- Rating Form -->
     <label for="description">Description: </label>
     <text name="description" id="description"></text>
-    <form id="ramen-rating" data-id="insert ramen ID">
+    <form id="tea-rating" data-id="insert tea ID">
       <label for="rating">Rating: </label>
       <input type="text" name="rating" id="rating" value="Insert Rating Here" />
       <label for="comment">Comment: </label>
       <textarea name="comment" id="comment">Insert Comment Here</textarea>
       <input type="submit" value="Update" />
       <button type='button' class='delete'>Delete</button>
-      <button type='button' class='order'>Add to order</button>
+    
     </form>
 
-    <form id="new-ramen">
+    <form id="new-tea">
       <h4>Add New Tea</h4>
       <label for="name">Name: </label>
       <input type="text" name="name" id="new-name" />
