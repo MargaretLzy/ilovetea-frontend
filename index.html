@@ -50,7 +50,8 @@
       <div class="cart__footer">
         <h3>Total: $ <span class="cart__total">0</span></h3>
         <button class="clear__cart btn">Clear Cart</button>
-        <button class ="order">Check Out</button>
+        
+        <button class ="order" id="btn" >Check Out</button>
       </div>
     </div>
   </section>
@@ -61,19 +62,20 @@
      
     </div>
   </section>
-    <!-- Tea Details -->
-    <div id="tea-detail">
-      <img class="detail-image" src="" alt="Insert Name Here" />
-      <h2 class="name">Insert Name Here</h2>
-      <h3 class="restaurant">Insert Restaurant Here</h3>
+   <!-- Tea Details -->
+   <div id="tea-detail">
+    <img class="detail-image" src="" alt="Insert Name Here" />
+    <h2 class="name">Insert Name Here</h2>
+    <h3 class="restaurant">Insert Restaurant Here</h3>
+ 
+     <button class="btn addToCart" data-id="id" >Add to Cart</button>
+    <div class="price">$255.99</div>
    
-       <button class="btn addToCart" data-id="id" >Add to Cart</button>
-      <div class="price">$255.99</div>
-     
-    </div>
-     </div>
+  </div>
+   </div>
 
     <!-- Rating Form -->
+    <br>
     <label for="description">Description: </label>
     <text name="description" id="description"></text>
     <form id="tea-rating" data-id="insert tea ID">
@@ -88,16 +90,16 @@
 
     <form id="new-tea">
       <h4>Add New Tea</h4>
-      <label for="name">Name: </label>
-      <input type="text" name="name" id="new-name" />
+      <label for="Name">Name: </label>
+      <input type="text" name="name" id="new-name" placeholder="    Name" required/>
       <label for="restaurant">Restaurant: </label>
-      <input type="text" name="restaurant" id="new-restaurant" />
+      <input type="text" name="restaurant" id="new-restaurant" placeholder="    Restaurant" />
       <label for="image">Image: </label>
-      <input type="text" name="image" id="new-image" />
-      <label for="rating">Rating: </label>
-      <input type="number" name="rating" id="new-rating" />
-      <label for="new-comment">Comment: </label>
-      <textarea name="new-comment" id="new-comment">Insert Comment Here</textarea>
+      <input type="text" name="image" id="new-image" placeholder="    Add image"  required/>
+      <label for="price">Price: </label>
+      <input type="float" name="price" id="new-price" placeholder="   Enter price"  />
+      <label for="description">Description: </label>
+      <textarea name="description" id="description">Add Description Here</textarea>
       <input type="submit" value="Create" />
     </form>
     

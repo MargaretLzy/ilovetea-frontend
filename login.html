@@ -7,12 +7,7 @@
     <style>
       
         body {
-    --color-primary: #009579;
-    --color-primary-dark: #007f67;
-    --color-secondary: #252c6a;
-    --color-error: #cc3333;
-    --color-success: #4bb544;
-    --border-radius: 4px;
+ 
 
     margin: 0;
     height: 100vh;
@@ -69,15 +64,40 @@
             background: dodgerblue;
             color: #fff;
         }
-     
+    
+        #loginbtn{
+            background: #fff;
+            color: dodgerblue;
+            border: solid 1px rgb(97, 132, 167);
+            cursor: pointer;
+            transition:  all .38s ease-in-out;
+            width: 100%;
+            padding: 1rem 2rem;
+             font-weight: bold;
+            font-size: 1.1rem;
+            border: none;
+             border-radius: var(--border-radius);
+            outline: none;
+            cursor: pointer;
+        }
+     #loginbtn:hover{
+        background: dodgerblue;
+            color: #fff;
+     }
+     #linkLogin{
+        cursor: pointer;
+     }
+     #linkCreateAccount{
+         cursor:pointer;
+     }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <h2>SIGNUP FORM</h2>
         
         <form class="form form--hidden" id="createAccount" onsubmit="signUp(event);">
+            <h2>SIGNUP FORM</h2>
             <div class="form-group">
                 <input type="text" name="fname" id="fname" placeholder="First Name" required>
             </div>
@@ -106,7 +126,9 @@
             <div class="form-group">
                 <input type="password" name="pwd" id="pwd" placeholder="Password" required>
             </div>
-        <input type = "button" name ="login" id="login" value="Login" onclick="check()">
+            <div class ="button">
+        <input type = "button" name ="login" id="loginbtn" value="Login" onclick="check()">
+    </div>
         <p class="form__text">
             <input type ="button" class="form__link" id="linkCreateAccount" onclick="create()" value= "Don't have an account? Create account">
         </p>
@@ -151,11 +173,11 @@
                 window.location.href="index.html";
             }  
                
-           //   else{ alert("Invalid username/password combination");}
+              else{ alert("Invalid username/password combination");}
             })}
            
         }
-        
+       // localStorage.clear();
         const loginForm = document.querySelector("#login");
         const createAccountForm = document.querySelector("#createAccount");
       function create(){

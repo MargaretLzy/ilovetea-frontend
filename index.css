@@ -152,12 +152,15 @@ form {
 input,
 textarea {
   font-size: 1rem;
-  border: 1px solid black;
-  background-color: white;
-  padding: 0.5rem;
+  background: transparent;
+  color: black;
+  resize: none;
+  border: 0 none;
   margin: 0.25rem 0;
   width: 100%;
 }
+
+
 
 input[type="submit"] {
   color: white;
@@ -359,4 +362,23 @@ form h4 {
     padding: 0.8rem 1.5rem;
     font-size: 1.6rem;
   }
+}
+#btn{
+  background: #fff;
+  color: dodgerblue;
+  border: solid 1px rgb(97, 132, 167);
+  cursor: pointer;
+  transition:  all .38s ease-in-out;
+  width: 100%;
+  padding: 1rem 2rem;
+   font-weight: bold;
+  font-size: 1.1rem;
+  border: none;
+   border-radius: var(--border-radius);
+  outline: none;
+  cursor: pointer;
+}
+#btn:hover{
+background: dodgerblue;
+  color: #fff;
 }

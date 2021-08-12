@@ -263,7 +263,7 @@ function renderAllTea(){
         .then(r => r.json())
         .then(teas => {
             menu.innerHTML = ''
-            oneTea(teas[0])
+        oneTea(teas[0])
            
             Storage.saveProduct(teas)
             teas.forEach(tea => {
@@ -304,20 +304,20 @@ update.addEventListener('submit', e=>{
 })
 
 newform.addEventListener('submit', e=>{
-    e.preventDefault()
 
     const name = e.target.name.value
     const restaurant= e.target.restaurant.value
     const image = e.target.image.value
-    const rating = e.target.rating.value
-    const comment = e.target[4].value
+    const price = e.target.price.value
+    const description = e.target.description.value
+    
 
     fetch('http://localhost:3000/menu_items', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ name, restaurant, image, rating, comment,id })
+        body: JSON.stringify({ name, restaurant, image, price, description})
     })
         .then(r => r.json())
         .then(newTea => {
