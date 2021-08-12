@@ -49,7 +49,7 @@ header {
 }
 
 .nav__logo span {
-  color: var(--orange);
+  color: black;
 }
 
 .nav__list {
@@ -57,7 +57,7 @@ header {
   align-items: center;
 }
 
-.login {
+.sign {
   display: inline-block;
   font-size: 1.7rem;
   margin-right: 2rem;

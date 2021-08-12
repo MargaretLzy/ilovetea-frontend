@@ -14,6 +14,8 @@ const clearCartBtn = document.querySelector(".clear__cart");
 const itemTotals = document.querySelector(".item__total");
 const cartit=document.querySelector('.cart__item')
 const add = document.querySelector('button.btn.addToCart')
+const login=document.querySelector('.login')
+const checkout = document.querySelector('.order')
 
 
 
@@ -34,7 +36,11 @@ function getButtons() {
      add.disabled = true;
     }
   }
-  
+  checkout.addEventListener('click',e => {
+    alert("Your Order has been placed, Thank you")
+    clearCart();
+
+  })
     add.addEventListener("click", e => {
       e.preventDefault();
      console.log(add)
