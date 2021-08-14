@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FORM DATA</title>
+    <title>I ♥ Tea login</title>
     <style>
       
         body {
@@ -18,7 +18,7 @@
     background: url(./background.jpg);
     background-size: cover;
 }
-        .container {
+    .container {
     width: 400px;
     max-width: 400px;
     margin: 1rem;
@@ -87,7 +87,7 @@
      #linkLogin{
         cursor: pointer;
      }
-     #linkCreateAccount{
+     #linkNew{
          cursor:pointer;
      }
     </style>
@@ -96,21 +96,14 @@
 
     <div class="container">
         
-        <form class="form form--hidden" id="createAccount" onsubmit="signUp(event);">
+        <form class="form form--hidden" id="new" onsubmit="signUp(event);">
             <h2>SIGNUP FORM</h2>
             <div class="form-group">
                 <input type="text" name="fname" id="fname" placeholder="First Name" required>
-            </div>
-            <div class="form-group">
                 <input type="text" name="lname" id="lname" placeholder="Last Name" required>
-            </div>
-            <div class="form-group">
                 <input type="email" name="email" id="email" placeholder="Email Address" required>
-            </div>
-            <div class="form-group">
                 <input type="password" name="pwd" id="pwd" placeholder="Password" required>
-            </div>
-            <div class="form-group">
+         
                 <button type="submit">Sign Up</button>
             </div>
             <p class="form__text">
@@ -122,32 +115,32 @@
             <h1 class="form__title">Log In</h1>
             <div class="form-group">
                 <input type="email" name="email" id="email" placeholder="Email Address" required>
-            </div>
-            <div class="form-group">
+          
                 <input type="password" name="pwd" id="pwd" placeholder="Password" required>
             </div>
             <div class ="button">
         <input type = "button" name ="login" id="loginbtn" value="Login" onclick="check()">
     </div>
         <p class="form__text">
-            <input type ="button" class="form__link" id="linkCreateAccount" onclick="create()" value= "Don't have an account? Create account">
+            <input type ="button" class="form__link" id="linkNew" onclick="create()" value= "Don't have an account? Create account">
         </p>
       </form>
 
     <script type="text/javascript">
         const signUp = e => {
-            let formData = JSON.parse(localStorage.getItem('formData')) || [];
-            let exist = formData.length && 
-            JSON.parse(localStorage.getItem('formData')).some(data => data.fname.toLowerCase() == document.getElementById('fname').value.toLowerCase() && data.lname.toLowerCase() == document.getElementById('lname').value.toLowerCase());
+            let userdata = JSON.parse(localStorage.getItem('userdata')) || [];
+            let exist = userdata.length && 
+            
+            JSON.parse(localStorage.getItem('userdata')).some(data => data.fname.toLowerCase() == document.getElementById('fname').value.toLowerCase() && data.lname.toLowerCase() == document.getElementById('lname').value.toLowerCase());
             if(!exist){
-                formData.push({
+                userdata.push({
                     fname: document.getElementById('fname').value,
                     lname: document.getElementById('lname').value,
                     email: document.getElementById('email').value,
                     pwd: document.getElementById('pwd').value
                 });
-                localStorage.setItem('formData', JSON.stringify(formData));
-                 console.log(localStorage.getItem('formData'));
+                localStorage.setItem('userdata', JSON.stringify(userdata));
+                 console.log(localStorage.getItem('userdata'));
                 window.location.href="index.html";
                 document.querySelector('form').reset();
                 document.getElementById('fname').focus();
@@ -160,8 +153,8 @@
       
         function check(){
         console.log('cl')
-        if(localStorage.getItem('formData')){
-                JSON.parse(localStorage.getItem('formData')).forEach(data => {
+        if(localStorage.getItem('userdata')){
+                JSON.parse(localStorage.getItem('userdata')).forEach(data => {
           
             var email = document.forms["form"]["email"].value;
             var pwd = document.forms["form"]["pwd"].value;
@@ -179,20 +172,18 @@
         }
        // localStorage.clear();
         const loginForm = document.querySelector("#login");
-        const createAccountForm = document.querySelector("#createAccount");
+        const newForm = document.querySelector("#new");
       function create(){
       
-        document.querySelector("#linkCreateAccount").addEventListener("click", e => {
+        document.querySelector("#linkNew").addEventListener("click", e => {
         e.preventDefault();
         console.log('vcl')
         loginForm.classList.add("form--hidden");
-        createAccountForm.classList.remove("form--hidden");
+        newForm.classList.remove("form--hidden");
     });}
     function login(){
-    
-   console.log('ck')
         loginForm.classList.remove("form--hidden");
-        createAccountForm.classList.add("form--hidden");
+        newForm.classList.add("form--hidden");
     };
     </script>
 </body>

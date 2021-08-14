@@ -5,7 +5,7 @@ const newform = document.querySelector('form#new-tea')
 const deletebtn=document.querySelector('button.delete')
 const orderbtn=document.querySelector('button.order')
 const cartDOM = document.querySelector(".cart");
-const cartContent = document.querySelector(".cart__centent");
+const cartDetail = document.querySelector(".cart-detail");
 const openCart = document.querySelector(".cart__icon");
 const closeCart = document.querySelector(".close__cart");
 const overlay = document.querySelector(".cart-overlay");
@@ -21,7 +21,7 @@ const checkout = document.querySelector('.order')
 
 let cart =[];
 
-function getButtons() {
+function checkcart() {
  
     const id = add.dataset.id;
     //console.log(add)
@@ -49,21 +49,16 @@ function getButtons() {
  
       const id = add.dataset.id;
      console.log(id);
-      // Get product from products
-      const order_item = { ...Storage.getProduct(id), amount: 1 };
+      const order_item = { ...Storage.getDrink(id), amount: 1 };
      
       console.log(order_item)
-      // Add product to cart
+      // Add order to cart
       cart = [...cart, order_item];
       console.log(cart)
-
-      // save the cart in local storage
       Storage.saveCart(cart);
-      // set cart values
       this.setItemValues(cart);
-      // display the cart item
+      // display items in cart
       this.addOrderItem(order_item);
-      // show the cart
 
     });
   ;
@@ -112,11 +107,10 @@ function addOrderItem({ image, price, name, id }) {
           </span>
 
       </div>`;
-  cartContent.appendChild(div);
+      cartDetail.appendChild(div);
 }
 
 function show() {
-  
   cartDOM.classList.add("show");
   overlay.classList.add("show");
 }
@@ -145,8 +139,8 @@ function populate(cart) {
       console.log(orderItems)
       orderItems.forEach(id => this.removeItem(id));
   
-      while (cartContent.children.length > 0) {
-        cartContent.removeChild(cartContent.children[0]);
+      while (cartDetail.children.length > 0) {
+        cartDetail.removeChild(cartDetail.children[0]);
       }
     }
    function removeItem(id) {
@@ -159,34 +153,34 @@ function populate(cart) {
     }
   
   
-    cartContent.addEventListener("click", e => {
+    cartDetail.addEventListener("click", e => {
       const target = e.target.closest("span");
-      const targetElement = target.classList.contains("remove__item");
+      const targetItem= target.classList.contains("remove__item");
       if (!target) return;
 
-      if (targetElement) {
+      if (targetItem) {
         const id = parseInt(target.dataset.id);
         this.removeItem(id);
-        cartContent.removeChild(target.parentElement);
+        cartDetail.removeChild(target.parentElement);
       } else if (target.classList.contains("increase")) {
         const id = parseInt(target.dataset.id, 10);
-        let tempItem = cart.find(item => item.id === id);
-        tempItem.amount++;
+        let current = cart.find(item => item.id === id);
+        current.amount++;
         Storage.saveCart(cart);
         this.setItemValues(cart);
-        target.nextElementSibling.innerText = tempItem.amount;
+        target.nextElementSibling.innerText = current.amount;
       } else if (target.classList.contains("decrease")) {
         const id = parseInt(target.dataset.id, 10);
-        let tempItem = cart.find(item => item.id === id);
-        tempItem.amount--;
+        let current = cart.find(item => item.id === id);
+        current.amount--;
 
-        if (tempItem.amount > 0) {
+        if (current.amount > 0) {
           Storage.saveCart(cart);
           this.setItemValues(cart);
-          target.previousElementSibling.innerText = tempItem.amount;
+          target.previousElementSibling.innerText = current.amount;
         } else {
           this.removeItem(id);
-          cartContent.removeChild(target.parentElement.parentElement);
+          cartDetail.removeChild(target.parentElement.parentElement);
         }
       }
     });
@@ -218,12 +212,12 @@ function oneTea(tea)
     add.disabled= false
     add.innerHTML="Add to Cart"
     console.log(add)
-    getButtons();
+    checkcart();
     
 }
 class Storage {
-  static saveProduct(obj) {
-    localStorage.setItem("products", JSON.stringify(obj));
+  static saveDrink(obj) {
+    localStorage.setItem("drinks", JSON.stringify(obj));
 
   }
 
@@ -231,12 +225,12 @@ class Storage {
     localStorage.setItem("cart", JSON.stringify(cart));
   }
 
-  static getProduct(id) {
-    const products = JSON.parse(localStorage.getItem("products"));
-   console.log(products)
+  static getDrink(id) {
+    const drinks = JSON.parse(localStorage.getItem("drinks"));
+   console.log(drinks)
    
-  return products.find(product => {
-      return product.id === parseInt(id)
+  return drinks.find(drink => {
+      return drink.id === parseInt(id)
     }
       );
  //console.log(products.find(product => product.id === id))
@@ -265,7 +259,7 @@ function renderAllTea(){
             menu.innerHTML = ''
         oneTea(teas[0])
            
-            Storage.saveProduct(teas)
+            Storage.saveDrink(teas)
             teas.forEach(tea => {
                 renderoneTea(tea)
                
